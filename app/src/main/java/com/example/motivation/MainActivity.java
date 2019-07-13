@@ -1,6 +1,7 @@
 package com.example.motivation;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -98,8 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         large.setText(smallClick());
     }
     public void onClick(View view){
-        txtbox.setTextColor(Color.parseColor("#B71C1C"));
-        txtbox.setText("Game ON!");
+        startActivity(new Intent(MainActivity.this, Pop.class));
         if(done.getVisibility() != View.VISIBLE) {
             switch (view.getId()) {
                 case R.id.choice1:
