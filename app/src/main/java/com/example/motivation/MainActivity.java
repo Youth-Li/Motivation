@@ -27,12 +27,11 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    Button small , med , large ,done;
-    ArrayList<String> easy;
-   // ArrayList<String> medium;
-    //ArrayList<String> largo;
-    TextView txtbox;
-    Context context;
+    private Button top , mid , bot;
+
+    private  ArrayList<challangeStruct> easy;
+    private TextView txtbox;
+
 
 
 
@@ -55,12 +54,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
     public void init(){
-        context = getApplicationContext();
-        easy = new ArrayList<String>();
-        //medium = new ArrayList<String>();
-        //largo = new ArrayList<String>();
+        easy = new ArrayList<challangeStruct>();
         txtbox = findViewById(R.id.Answer);
-        donePress d = new donePress(this);
         try {
             loadData();
         }
@@ -70,54 +65,62 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         catch (IOException k){
             System.out.println("Error reading file");
         }
-        Random rnd = new Random();
-        int primary = Color.WHITE;
-        int color = Color.argb(255, (rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2);
-        small = findViewById(R.id.choice1);
-        small.setBackgroundColor(color);
-        small.setTextColor(primary);
-        med = findViewById(R.id.choice2);
-        med.setTextColor(primary);
-        color = Color.argb(255,(rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2);
-        med.setBackgroundColor(color);
-        large = findViewById(R.id.choice3);
-        large.setTextColor(primary);
-        color = Color.argb(255, (rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2, (rnd.nextInt(256)+ primary)/2);
-        large.setBackgroundColor(color);
-        done = findViewById(R.id.donebut);
-        done.setOnClickListener(d);
-        small.setOnClickListener(this);
-        med = findViewById(R.id.choice2);
-        med.setOnClickListener(this);
-        large = findViewById(R.id.choice3);
-        large.setOnClickListener(this);
-        reRoll();
-    }
-    public void reRoll(){
-        small.setText(smallClick());
-        med.setText(smallClick());
-        large.setText(smallClick());
-    }
-    public void onClick(View view){
-        startActivity(new Intent(MainActivity.this, Pop.class));
-        if(done.getVisibility() != View.VISIBLE) {
-            switch (view.getId()) {
-                case R.id.choice1:
-                    currentChallange(small.getText().toString());
-                    break;
-                case R.id.choice2:
-                    currentChallange(med.getText().toString());
-                    break;
-                case R.id.choice3:
-                    currentChallange(large.getText().toString());
-                    break;
-                default:
-                    throw new RuntimeException("Unknown button ID");
+        //Wire up buttons to work.
+
+        top = findViewById(R.id.Topbutton);
+        mid = findViewById(R.id.Midbutton);
+        bot = findViewById(R.id.Botbutton);
 
 
-            }//the method has no regulation on how many times the button is pressed and that could cause trouble.
+
+        // Init what the buttons do when clicked.
+        top.setOnClickListener(this);
+        mid.setOnClickListener(this);
+        bot.setOnClickListener(this);
+
+        setButText(top);
+        setButText(mid);
+        setButText(bot);
+    }
+    public challangeStruct setButText(Button b) {
+        challangeStruct tmp = smallClick();
+        b.setText(tmp.getChallange() + "\n"+"Duration: "+tmp.getDays()+" days"+"\n"+"Level: "+tmp.getLevel());
+       // System.out.println(tmp.getLevel());
+        if(tmp.getLevel() == 1){
+            b.setBackgroundColor(Color.BLUE);
+            b.setTextColor(Color.WHITE);
+            return tmp;
         }
-        done.setVisibility(View.VISIBLE);
+        if(tmp.getLevel() == 2){
+            b.setBackgroundColor(Color.GREEN);
+            b.setTextColor(Color.BLACK);
+            return tmp;
+        }
+        if(tmp.getLevel() == 3){
+            b.setBackgroundColor(Color.YELLOW);
+            b.setTextColor(Color.BLACK);
+            return tmp;
+        }
+        if(tmp.getLevel() == 4){
+            b.setBackgroundColor(Color.MAGENTA);
+            b.setTextColor(Color.WHITE);
+            return tmp;
+        }
+        if(tmp.getLevel() == 5){
+            b.setBackgroundColor(Color.RED);
+            b.setTextColor(Color.BLACK);
+        }
+    return tmp;
+    }
+
+    public void onClick(View view){
+        Button b = (Button)view;
+      Intent i = new Intent(MainActivity.this, ConfirmWindow.class);
+      i.putExtra("challange",b.getText().toString() );
+
+
+
+        startActivity(i);
         }
         public void currentChallange(String s){
 
@@ -134,7 +137,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
 
         }
-    public String smallClick(){
+    public challangeStruct smallClick(){
         Random r = new Random();
         int x = r.nextInt(easy.size()-1);
        return easy.remove(x);
@@ -144,12 +147,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         BufferedReader bufred = new BufferedReader(
                 new InputStreamReader(getAssets().open("ledger.txt")));
-            String line = bufred.readLine();
+        String line = bufred.readLine();
+        String tmp = "";
+        while(line != null){
+           tmp = line.substring(line.length()-3);
 
-                while(line != null){
-                    line = bufred.readLine();
-                    easy.add(line);
-                }
+           line = line.substring(0, line.length()-3);
+           //where 48 is the offset to get from ascii int to regular int.
+           if(tmp.charAt(2) == 'd'){
+               easy.add(new challangeStruct((int)tmp.charAt(0)-48,(int)tmp.charAt(1)-48, line));
+               line = bufred.readLine();
+               continue;
+           }
+           if(tmp.charAt(2)=='w'){
+               easy.add(new challangeStruct((int)tmp.charAt(0)-48,((int)tmp.charAt(1)-48)*7, line));
+               line = bufred.readLine();
+           continue;
+           }
+           if(tmp.charAt(2) == 'y'){
+               easy.add(new challangeStruct((int)tmp.charAt(0)-48,((int)tmp.charAt(1)-48)*365, line));
+           }
+            line = bufred.readLine();
+        }
         bufred.close();
         return 0;
     }
