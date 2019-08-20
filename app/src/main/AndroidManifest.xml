@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+       <!-- <meta-data
+            android:name="com.google.android.actions"
+            />-->
+
         <activity
             android:name=".ConfirmWindow"
             android:label="@string/title_activity_confirm_window"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
