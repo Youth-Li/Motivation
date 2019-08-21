@@ -1,15 +1,12 @@
 package com.example.motivation;
 
 import android.app.Activity;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Pop extends Activity {
     @Override
@@ -22,9 +19,14 @@ public class Pop extends Activity {
         final int height = drew.heightPixels;
         getWindow().setLayout(width, height);
         fade();
+        AnimationDrawable anim ;
+        ImageView i = findViewById(R.id.fire);
+        i.setBackgroundResource(R.drawable.animote);
+        anim = (AnimationDrawable) i.getBackground();
+        anim.start();
     }
     public void fade(){
-        ImageView image = (ImageView)findViewById(R.id.imageView);
+        ImageView image = (ImageView)findViewById(R.id.gameon);
         Animation animation1 =
                 AnimationUtils.loadAnimation(getApplicationContext(), R.anim.move);
         image.startAnimation(animation1);

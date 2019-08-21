@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public challangeStruct setButText(Button b) {
         challangeStruct tmp = smallClick();
-        b.setText(tmp.getChallange() + "\n"+"Duration: "+tmp.getDays()+" days"+"\n"+"Level: "+tmp.getLevel());
+        b.setText(tmp.getChallange() + "\n\n"+"Duration: "+tmp.getDays()+" days"+"\n"+"Level: "+tmp.getLevel());
        // System.out.println(tmp.getLevel());
         if(tmp.getLevel() == 1){
             b.setBackgroundColor(Color.BLUE);
