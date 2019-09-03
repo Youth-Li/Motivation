@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private  ArrayList<challangeStruct> easy;
     private TextView txtbox;
-
+    private final int NUMOFGRETTINGS = 34;
 
 
 
@@ -55,7 +55,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
     public void init(){
         easy = new ArrayList<challangeStruct>();
-        txtbox = findViewById(R.id.Answer);
+        //Wire up buttons to work.
+        txtbox = findViewById(R.id.Question);
+        top = findViewById(R.id.Topbutton);
+        mid = findViewById(R.id.Midbutton);
+        bot = findViewById(R.id.Botbutton);
+        txtbox.setText(loadGrettingData());
         try {
             loadData();
         }
@@ -65,13 +70,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         catch (IOException k){
             System.out.println("Error reading file");
         }
-        //Wire up buttons to work.
-
-        top = findViewById(R.id.Topbutton);
-        mid = findViewById(R.id.Midbutton);
-        bot = findViewById(R.id.Botbutton);
-
-
 
         // Init what the buttons do when clicked.
         top.setOnClickListener(this);
@@ -171,6 +169,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         bufred.close();
         return 0;
+    }
+    public String loadGrettingData(){
+        Random r = new Random();
+        int limit =  r.nextInt(NUMOFGRETTINGS-1);
+        String s = "";
+        try {
+            BufferedReader bufred = new BufferedReader(
+                    new InputStreamReader(getAssets().open("welcomeledger.txt")));
+            s = bufred.readLine();
+            for(int x = 0 ; x < limit ; x++){
+              s =  bufred.readLine();
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        return s;
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
