@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C3C23C38">
-
+    android:background="#C3C23C38"
+    android:id="@+id/popt">
     <ImageView
         android:id="@+id/gameon"
         android:layout_width="match_parent"

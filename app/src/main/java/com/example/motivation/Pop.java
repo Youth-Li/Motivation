@@ -1,12 +1,15 @@
 package com.example.motivation;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class Pop extends Activity {
     @Override
@@ -24,6 +27,14 @@ public class Pop extends Activity {
         i.setBackgroundResource(R.drawable.animote);
         anim = (AnimationDrawable) i.getBackground();
         anim.start();
+        RelativeLayout r = findViewById(R.id.popt);
+        r.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Pop.this, MenuMain.class));
+            }
+        });
+
     }
     public void fade(){
         ImageView image = (ImageView)findViewById(R.id.gameon);
